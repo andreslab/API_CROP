@@ -5,9 +5,33 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/andreslab/prj_api_crop/database"
 )
 
 func main() {
+
+	/*err := database.CreateTableUser()
+	if err != nil {
+		fmt.Println(err)
+	}*/
+	/*conf := &database.MySQLConfig{
+		Username:   utils.User,
+		Password:   utils.Pass,
+		Host:       utils.Host,
+		Port:       utils.Port,
+		UnixSocket: "linux",
+	}*/
+
+	db, err := database.NewMySQLDB()
+	user, err := db.ListUser()
+
+	fmt.Println("users")
+	fmt.Println(user[0].Name)
+
+	if err != nil {
+		fmt.Println("error")
+	}
 
 	mux := http.NewServeMux()
 

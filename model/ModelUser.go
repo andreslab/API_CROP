@@ -1,16 +1,18 @@
 package model
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func Imprimi() {
 	fmt.Printf("hola")
 }
 
 type UserModel struct {
-	id      string `json:"id"`
-	name    string `json:"name"`
-	email   string `json:"email"`
-	pass    string `json:"pass"`
-	created int    `json:"created"`
-	scan    int    `json:"scan"`
+	ID       int64
+	Name     string `json:"name"`
+	Lastname string `json:"lastname"`
+	Email    string `json:"email"`
+	Pass     string `json:"pass"`
+	Created  string `json:"created"`
 }
