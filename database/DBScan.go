@@ -8,40 +8,38 @@ import (
 	"github.com/andreslab/prj_api_crop/model"
 )
 
-func scanScan(s rowScanner) (*model.UserModel, error) {
+func scanScan(s rowScanner) (*model.ScanModel, error) {
 	var (
-		id       int64
-		name     sql.NullString
-		lastname sql.NullString
-		email    sql.NullString
-		pass     sql.NullString
-		created  sql.NullString
+		id          int64
+		zone        sql.NullString
+		distance    sql.NullString
+		zone_width  sql.NullString
+		zone_height sql.NullString
 	)
-	if err := s.Scan(&id,
-		&name,
-		&lastname,
-		&email,
-		&pass,
-		&created); err != nil {
+	if err := s.Scan(
+		&id,
+		&zone,
+		&distance,
+		&zone_width,
+		&zone_height); err != nil {
 		return nil, err
 	}
 
-	user := &model.UserModel{
-		ID:       id,
-		Name:     name.String,
-		Lastname: lastname.String,
-		Email:    email.String,
-		Pass:     pass.String,
-		Created:  created.String,
+	scan := &model.ScanModel{
+		ID:         id,
+		Zone:       zone.String,
+		Distance:   distance.String,
+		ZoneWidth:  zone_width.String,
+		ZoneHeight: zone_height.String,
 	}
-	return user, nil
+	return scan, nil
 }
 
 // newMySQLDB creates a new UserDatabase backed by a given MySQL server.
 func NewMySQLDBScan() (*mysqlDB, error) {
 
 	// Check database and table exists. If not, create it.
-	err := ensureTableExists(tableNameUser, createTableStatementsUser)
+	err := ensureTableExists(tableNameScan, createTableStatementsScan)
 	if err != nil {
 		return nil, err
 	}
@@ -57,13 +55,13 @@ func NewMySQLDBScan() (*mysqlDB, error) {
 	}
 	// Prepared statements. The actual SQL queries are in the code near the
 	// relevant method (e.g. addBook).
-	if db.list, err = conn.Prepare(listStatementUser); err != nil {
+	if db.list, err = conn.Prepare(listStatementScan); err != nil {
 		return nil, fmt.Errorf("mysql: prepare list: %v", err)
 	}
-	if db.get, err = conn.Prepare(getStatementUser); err != nil {
+	if db.get, err = conn.Prepare(getStatementScan); err != nil {
 		return nil, fmt.Errorf("mysql: prepare get: %v", err)
 	}
-	if db.insert, err = conn.Prepare(insertStatementUser); err != nil {
+	if db.insert, err = conn.Prepare(insertStatementScan); err != nil {
 		return nil, fmt.Errorf("mysql: prepare insert: %v", err)
 	}
 	/*
@@ -80,14 +78,13 @@ func NewMySQLDBScan() (*mysqlDB, error) {
 	return db, nil
 }
 
-func (db *mysqlDB) AddScan(u *model.UserModel) (id int64, err error) {
+func (db *mysqlDB) AddScan(u *model.ScanModel) (id int64, err error) {
 	r, err := execAffectingOneRow(
 		db.insert,
-		u.Name,
-		u.Lastname,
-		u.Email,
-		u.Pass,
-		u.Created)
+		u.Zone,
+		u.Distance,
+		u.ZoneWidth,
+		u.ZoneHeight)
 	if err != nil {
 		return 0, err
 	}
@@ -99,7 +96,7 @@ func (db *mysqlDB) AddScan(u *model.UserModel) (id int64, err error) {
 	return lastInsertID, nil
 }
 
-func (db *mysqlDB) ListScan() ([]*model.UserModel, error) {
+func (db *mysqlDB) ListScan() ([]*model.ScanModel, error) {
 	rows, err := db.list.Query()
 	if err != nil {
 		fmt.Print("error")
@@ -108,23 +105,23 @@ func (db *mysqlDB) ListScan() ([]*model.UserModel, error) {
 	}
 	defer rows.Close()
 
-	var users []*model.UserModel
+	var scans []*model.ScanModel
 	for rows.Next() {
-		user, err := scanScan(rows)
+		scan, err := scanScan(rows)
 		if err != nil {
 			return nil, fmt.Errorf("mysql: could not read row: %v", err)
 		}
 
-		users = append(users, user)
+		scans = append(scans, scan)
 	}
-	return users, nil
+	return scans, nil
 }
 
 func (db *mysqlDB) GetScan(id int64) {
 
 }
 
-func (db *mysqlDB) UpdateScan(b *model.UserModel) error {
+func (db *mysqlDB) UpdateScan(b *model.ScanModel) error {
 	return nil
 }
 

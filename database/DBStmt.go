@@ -12,6 +12,7 @@ const insertStatementUser = `
   ) VALUES (?, ?, ?, ?, ?)`
 const listStatementUser = `SELECT * FROM ` + tableNameUser
 const getStatementUser = `SELECT * FROM ` + tableNameUser
+const updateStatementUser = `SELECT * FROM ` + tableNameUser
 
 var createTableStatementsUser = []string{
 	`CREATE DATABASE IF NOT EXISTS ` + utils.Namedb + ` DEFAULT CHARACTER SET = 'utf8' DEFAULT COLLATE 'utf8_general_ci';`,
@@ -35,6 +36,7 @@ const insertStatementInfo = `
   ) VALUES (?, ?, ?, ?, ?)`
 const listStatementInfo = `SELECT * FROM ` + tableNameInfo
 const getStatementInfo = `SELECT * FROM ` + tableNameInfo
+const updateStatementInfo = `SELECT * FROM ` + tableNameInfo
 
 var createTableStatementsInfo = []string{
 	`CREATE DATABASE IF NOT EXISTS ` + utils.Namedb + ` DEFAULT CHARACTER SET = 'utf8' DEFAULT COLLATE 'utf8_general_ci';`,
@@ -58,6 +60,7 @@ const insertStatementPlant = `
   ) VALUES (?, ?, ?, ?, ?)`
 const listStatementPlant = `SELECT * FROM ` + tableNamePlant
 const getStatementPlant = `SELECT * FROM ` + tableNamePlant
+const updateStatementPlant = `SELECT * FROM ` + tableNamePlant
 
 var createTableStatementsPlant = []string{
 	`CREATE DATABASE IF NOT EXISTS ` + utils.Namedb + ` DEFAULT CHARACTER SET = 'utf8' DEFAULT COLLATE 'utf8_general_ci';`,
@@ -81,6 +84,7 @@ const insertStatementScan = `
   ) VALUES (?, ?, ?, ?, ?)`
 const listStatementScan = `SELECT * FROM ` + tableNameScan
 const getStatementScan = `SELECT * FROM ` + tableNameScan
+const updateStatementScan = `SELECT * FROM ` + tableNameScan
 
 var createTableStatementsScan = []string{
 	`CREATE DATABASE IF NOT EXISTS ` + utils.Namedb + ` DEFAULT CHARACTER SET = 'utf8' DEFAULT COLLATE 'utf8_general_ci';`,
