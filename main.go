@@ -36,6 +36,11 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", CheckState)
+	mux.HandleFunc("/crop/alarm")
+	mux.HandleFunc("/crop/note", CheckState)
+	mux.HandleFunc("/crop/result", CheckState)
+	mux.HandleFunc("/crop/scan", CheckState)
+	mux.HandleFunc("/crop/user", CheckState)
 
 	port := os.Getenv("PORT")
 	if port == "" {

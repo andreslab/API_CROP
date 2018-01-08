@@ -4,11 +4,11 @@ import (
 	"fmt"
 )
 
-func (c userModel) Imprimi() {
+func (c UserModel) Imprimi() {
 	fmt.Printf("hola")
 }
 
-type userModel struct {
+type UserModel struct {
 	ID       int64
 	Name     string `json:"name"`
 	Lastname string `json:"lastname"`

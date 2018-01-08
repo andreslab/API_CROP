@@ -1,6 +1,6 @@
 package model
 
-type weatherModel struct {
+type WeatherModel struct {
 	State                    string `json:"state"` //estado: nublado, soleado, etc
 	Temperature              string `json:"temp"`
 	Wet                      string `json:"wet"` //humedad

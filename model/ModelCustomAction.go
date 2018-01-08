@@ -1,6 +1,6 @@
 package model
 
-type actionCreateNoteModel struct {
+type ActionCreateNoteModel struct {
 	ID          int64
 	Title       string `json:"title"`
 	Body        string `json:"body"`
@@ -11,7 +11,8 @@ type actionCreateNoteModel struct {
 	IDUser      int64  `json:"iduser"`
 }
 
-type actionCreateAlarmModel struct {
+type ActionCreateAlarmModel struct {
+	ID          int64
 	Title       string `json:"title"`
 	DateCreated string `json:"created"`
 	DateAlarm   string `json:"alarm"`

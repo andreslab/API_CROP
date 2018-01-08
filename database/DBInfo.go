@@ -8,40 +8,44 @@ import (
 	"github.com/andreslab/prj_api_crop/model"
 )
 
-func scanInfo(s rowScanner) (*model.UserModel, error) {
+func scanInfo(s rowScanner) (*model.InfoModel, error) {
+
 	var (
-		id       int64
-		name     sql.NullString
-		lastname sql.NullString
-		email    sql.NullString
-		pass     sql.NullString
-		created  sql.NullString
+		id      int64
+		created sql.NullString
+		crop    sql.NullString
+		sowing  sql.NullString
+		city    sql.NullString
+		address sql.NullString
+		iduser  int64
 	)
 	if err := s.Scan(&id,
-		&name,
-		&lastname,
-		&email,
-		&pass,
-		&created); err != nil {
+		&created,
+		&crop,
+		&sowing,
+		&city,
+		&address,
+		&iduser); err != nil {
 		return nil, err
 	}
 
-	user := &model.UserModel{
-		ID:       id,
-		Name:     name.String,
-		Lastname: lastname.String,
-		Email:    email.String,
-		Pass:     pass.String,
-		Created:  created.String,
+	info := &model.InfoModel{
+		ID:         id,
+		Created:    created.String,
+		Crop:       crop.String,
+		SowingType: sowing.String,
+		City:       city.String,
+		Address:    address.String,
+		IDUser:     iduser,
 	}
-	return user, nil
+	return info, nil
 }
 
 // newMySQLDB creates a new UserDatabase backed by a given MySQL server.
 func NewMySQLDBInfo() (*mysqlDB, error) {
 
 	// Check database and table exists. If not, create it.
-	err := ensureTableExists(tableNameUser, createTableStatementsUser)
+	err := ensureTableExists(tableNameInfo, createTableStatementsInfo)
 	if err != nil {
 		return nil, err
 	}
@@ -80,14 +84,15 @@ func NewMySQLDBInfo() (*mysqlDB, error) {
 	return db, nil
 }
 
-func (db *mysqlDB) AddInfo(u *model.UserModel) (id int64, err error) {
+func (db *mysqlDB) AddInfo(u *model.InfoModel) (id int64, err error) {
 	r, err := execAffectingOneRow(
 		db.insert,
-		u.Name,
-		u.Lastname,
-		u.Email,
-		u.Pass,
-		u.Created)
+		u.Created,
+		u.Crop,
+		u.SowingType,
+		u.City,
+		u.Address,
+		u.IDUser)
 	if err != nil {
 		return 0, err
 	}
@@ -99,7 +104,7 @@ func (db *mysqlDB) AddInfo(u *model.UserModel) (id int64, err error) {
 	return lastInsertID, nil
 }
 
-func (db *mysqlDB) ListInfo() ([]*model.UserModel, error) {
+func (db *mysqlDB) ListInfo() ([]*model.InfoModel, error) {
 	rows, err := db.list.Query()
 	if err != nil {
 		fmt.Print("error")
@@ -108,23 +113,23 @@ func (db *mysqlDB) ListInfo() ([]*model.UserModel, error) {
 	}
 	defer rows.Close()
 
-	var users []*model.UserModel
+	var infos []*model.InfoModel
 	for rows.Next() {
-		user, err := scanUser(rows)
+		info, err := scanInfo(rows)
 		if err != nil {
 			return nil, fmt.Errorf("mysql: could not read row: %v", err)
 		}
 
-		users = append(users, user)
+		infos = append(infos, info)
 	}
-	return users, nil
+	return infos, nil
 }
 
 func (db *mysqlDB) GetInfo(id int64) {
 
 }
 
-func (db *mysqlDB) UpdateInfo(b *model.UserModel) error {
+func (db *mysqlDB) UpdateInfo(b *model.InfoModel) error {
 	return nil
 }
 

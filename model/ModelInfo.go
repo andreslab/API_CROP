@@ -2,7 +2,7 @@ package model
 
 //información que el usuario provee a la aplciación
 
-type infoModel struct {
+type InfoModel struct {
 	ID         int64
 	Created    string `json:"created"`
 	Crop       string `json:"crop"`

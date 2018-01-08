@@ -3,7 +3,7 @@ package controller
 import "net/http"
 import "fmt"
 
-func RouteManagerAccount(w http.ResponseWriter, r *http.Request) {
+func ManagerRouterAccount(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		RequestGetInfoAccount(w, r)

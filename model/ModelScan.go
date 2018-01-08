@@ -1,9 +1,8 @@
 package model
 
-type scanModel struct {
+type ScanModel struct {
 	ID         int64
 	Created    string `json:"created"`
-	Zone       string `json:"zone"`
 	Distance   string `json:"distance"`
 	ZoneWidth  string `json:"zone_width"`
 	ZoneHeight string `json:"zone_height"`

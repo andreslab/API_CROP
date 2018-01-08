@@ -5,25 +5,37 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/andreslab/prj_api_crop/model"
+	modelDB "github.com/andreslab/prj_api_crop/database/model"
 )
 
-func scanPlant(s rowScanner) (*model.PlantModel, error) {
+func scanPlant(s rowScanner) (*modelDB.PlantModelDB, error) {
 	var (
-		id      int64
-		name    sql.NullString
-		kingdom sql.NullString
+		id          int64
+		name        sql.NullString
+		kingdom     sql.NullString
+		season      sql.NullString
+		temperature sql.NullString
+		idnutrient  int64
+		idpests     int64
 	)
 	if err := s.Scan(&id,
 		&name,
-		&kingdom); err != nil {
+		&kingdom,
+		&season,
+		&temperature,
+		&idnutrient,
+		&idpests); err != nil {
 		return nil, err
 	}
 
-	plant := &model.PlantModel{
-		ID:      id,
-		Name:    name.String,
-		Kingdom: kingdom.String,
+	plant := &modelDB.PlantModelDB{
+		ID:             id,
+		Name:           name.String,
+		Kingdom:        kingdom.String,
+		SeasonEnv:      season.String,
+		TemperatureEnv: temperature.String,
+		IDNutrient:     idnutrient,
+		IDPests:        idpests,
 	}
 	return plant, nil
 }
@@ -71,11 +83,15 @@ func NewMySQLDBPlant() (*mysqlDB, error) {
 	return db, nil
 }
 
-func (db *mysqlDB) AddPLant(u *model.PlantModel) (id int64, err error) {
+func (db *mysqlDB) AddPLant(u *modelDB.PlantModelDB) (id int64, err error) {
 	r, err := execAffectingOneRow(
 		db.insert,
 		u.Name,
-		u.Kingdom)
+		u.Kingdom,
+		u.SeasonEnv,
+		u.TemperatureEnv,
+		u.IDNutrient,
+		u.IDPests)
 	if err != nil {
 		return 0, err
 	}
@@ -87,7 +103,7 @@ func (db *mysqlDB) AddPLant(u *model.PlantModel) (id int64, err error) {
 	return lastInsertID, nil
 }
 
-func (db *mysqlDB) ListPlant() ([]*model.PlantModel, error) {
+func (db *mysqlDB) ListPlant() ([]*modelDB.PlantModelDB, error) {
 	rows, err := db.list.Query()
 	if err != nil {
 		fmt.Print("error")
@@ -96,7 +112,7 @@ func (db *mysqlDB) ListPlant() ([]*model.PlantModel, error) {
 	}
 	defer rows.Close()
 
-	var plants []*model.PlantModel
+	var plants []*modelDB.PlantModelDB
 	for rows.Next() {
 		plant, err := scanPlant(rows)
 		if err != nil {
@@ -112,7 +128,7 @@ func (db *mysqlDB) GetPlant(id int64) {
 
 }
 
-func (db *mysqlDB) UpdatePlant(b *model.PlantModel) error {
+func (db *mysqlDB) UpdatePlant(b *modelDB.PlantModelDB) error {
 	return nil
 }
 

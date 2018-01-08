@@ -1,22 +1,22 @@
 package model
 
-type plantModel struct {
+type PlantModel struct {
 	ID             int64
 	Name           string                    `json:"name"`
 	Kingdom        string                    `json:"kingdom"`
 	SeasonEnv      string                    `json:"season"`
 	TemperatureEnv string                    `json:"temp"`
-	Nutrient       plantNutrientFormulaModel `json:"nutrient"`
-	Pests          plantPestsModel           `json:"pests"`
+	Nutrient       PlantNutrientFormulaModel `json:"nutrient"`
+	Pests          PlantPestsModel           `json:"pests"`
 }
 
-type plantNutrientFormulaModel struct {
+type PlantNutrientFormulaModel struct {
 	ID        int64
 	Formula   string `json:"formula"`
 	Advantage string `json:"advantage"`
 }
 
-type plantPestsModel struct {
+type PlantPestsModel struct {
 	ID           int64
 	Category     string `json:"type"`
 	Causes       string `json:"causes"`

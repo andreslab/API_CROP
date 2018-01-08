@@ -10,27 +10,39 @@ import (
 
 func scanScan(s rowScanner) (*model.ScanModel, error) {
 	var (
-		id          int64
-		zone        sql.NullString
-		distance    sql.NullString
-		zone_width  sql.NullString
-		zone_height sql.NullString
+		id         int64
+		created    sql.NullString
+		distance   sql.NullString
+		zoneWidth  sql.NullString
+		zoneHeight sql.NullString
+		latitude   sql.NullString
+		longitude  sql.NullString
+		city       sql.NullString
+		iduser     int64
 	)
 	if err := s.Scan(
 		&id,
-		&zone,
+		&created,
 		&distance,
-		&zone_width,
-		&zone_height); err != nil {
+		&zoneWidth,
+		&zoneHeight,
+		&latitude,
+		&longitude,
+		&city,
+		&iduser); err != nil {
 		return nil, err
 	}
 
 	scan := &model.ScanModel{
 		ID:         id,
-		Zone:       zone.String,
+		Created:    created.String,
 		Distance:   distance.String,
-		ZoneWidth:  zone_width.String,
-		ZoneHeight: zone_height.String,
+		ZoneWidth:  zoneWidth.String,
+		ZoneHeight: zoneHeight.String,
+		Latitude:   latitude.String,
+		Longitude:  longitude.String,
+		City:       city.String,
+		IDUser:     iduser,
 	}
 	return scan, nil
 }
@@ -81,10 +93,15 @@ func NewMySQLDBScan() (*mysqlDB, error) {
 func (db *mysqlDB) AddScan(u *model.ScanModel) (id int64, err error) {
 	r, err := execAffectingOneRow(
 		db.insert,
-		u.Zone,
+		u.Created,
 		u.Distance,
 		u.ZoneWidth,
-		u.ZoneHeight)
+		u.ZoneHeight,
+		u.Latitude,
+		u.Longitude,
+		u.City,
+		u.IDUser,
+	)
 	if err != nil {
 		return 0, err
 	}
