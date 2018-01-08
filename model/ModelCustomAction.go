@@ -1,17 +1,25 @@
 package model
 
 type actionCreateNoteModel struct {
-	DateCreated string `json:"created"`
-	DateEdit    string `json:"edit"`
-	Body        string `json:"body"`
+	ID          int64
 	Title       string `json:"title"`
+	Body        string `json:"body"`
 	Tag         string `json:"tag"`
 	Alarm       string `json:"alarm"`
+	DateCreated string `json:"created"`
+	DateEdit    string `json:"edit"`
+	IDUser      int64  `json:"iduser"`
 }
 
-type actionCreateIrrigationAlarmModel struct {
-	DateCreated string `json:"alarm"`
-	DateAlarm   string `json:"date_alarm"`
-	Quantity    string `json:"quantity"`
-	PhLevel     string `json:"ph"`
+type actionCreateAlarmModel struct {
+	Title       string `json:"title"`
+	DateCreated string `json:"created"`
+	DateAlarm   string `json:"alarm"`
+	IDUser      int64  `json:"iduser"`
 }
+
+/*
+ittigación
+Quantity    string `json:"quantity"`
+PhLevel     string `json:"ph"`
+*/

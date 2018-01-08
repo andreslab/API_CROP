@@ -1,29 +1,23 @@
 package model
 
 type plantModel struct {
-	ID       int64
-	Name     string                      `json:"name"`
-	Kingdom  string                      `json:"kingdom"`
-	Nutrient plantNutrientModel          `json:"nutrient"`
-	Weather  plantWeatherEnviromentModel `josn:"weather"`
-	Pests    plantPestsModel             `json:"pests"`
+	ID             int64
+	Name           string                    `json:"name"`
+	Kingdom        string                    `json:"kingdom"`
+	SeasonEnv      string                    `json:"season"`
+	TemperatureEnv string                    `json:"temp"`
+	Nutrient       plantNutrientFormulaModel `json:"nutrient"`
+	Pests          plantPestsModel           `json:"pests"`
 }
 
-type plantNutrientModel struct {
-	Component    string `json:"component"`
-	Advantage    string `json:"advantage"`
-	AtomicNumber string `json:"atom"`
-}
-
-type plantWeatherEnviromentModel struct {
-	State                    string `json:"state"` //estado: nublado, soleado, etc
-	Temperature              string `json:"temp"`
-	Wet                      string `json:"wet"` //humedad
-	WindSpeed                string `json:"wind"`
-	PrecipitationProbability string `json:"pp"`
+type plantNutrientFormulaModel struct {
+	ID        int64
+	Formula   string `json:"formula"`
+	Advantage string `json:"advantage"`
 }
 
 type plantPestsModel struct {
+	ID           int64
 	Category     string `json:"type"`
 	Causes       string `json:"causes"`
 	Consequences string `json:"consequences"`
