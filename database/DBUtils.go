@@ -28,7 +28,7 @@ func ConnDB() *sql.DB {
 	} else {
 		fmt.Println("Success: conexión exitosa")
 	}
-	defer db.Close()
+	//defer db.Close()
 	return db
 }
 
@@ -70,7 +70,9 @@ func execAffectingOneRow(stmt *sql.Stmt, args ...interface{}) (sql.Result, error
 	if err != nil {
 		return r, fmt.Errorf("mysql: could not execute statement: %v", err)
 	}
+
 	rowsAffected, err := r.RowsAffected()
+
 	if err != nil {
 		return r, fmt.Errorf("mysql: could not get rows affected: %v", err)
 	} else if rowsAffected != 1 {

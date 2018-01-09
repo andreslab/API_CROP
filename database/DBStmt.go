@@ -10,11 +10,10 @@ const insertStatementUser = `
   INSERT INTO ` + tableNameUser + ` (
     name, lastname, email, pass, created
   ) VALUES (?, ?, ?, ?, ?)`
-const listStatementUser = `SELECT * FROM ` + tableNameUser + `ORDER BY name`
+const listStatementUser = `SELECT * FROM ` + tableNameUser + ` ORDER BY name`
 const getStatementUser = `SELECT * FROM ` + tableNameUser + ` WHERE email = ? ORDER BY name`
 const updateStatementUser = `
-UPDATE ` + tableNameUser + `
-SET name=?, lastname=?, email=?, pass=?, created=?
+UPDATE ` + tableNameUser + ` SET name=?, lastname=?, email=?, pass=?, created=?
 WHERE id = ?`
 const deleteStatementUser = `DELETE FROM ` + tableNameUser + ` WHERE id = ?`
 
@@ -38,7 +37,7 @@ const insertStatementNote = `
   INSERT INTO ` + tableNameNote + ` (
     title, body, tag, alarm, created, edit, iduser
   ) VALUES (?, ?, ?, ?, ?, ?, ?)`
-const listStatementNote = `SELECT * FROM ` + tableNameNote + `ORDER BY created`
+const listStatementNote = `SELECT * FROM ` + tableNameNote + ` ORDER BY created`
 const getStatementNote = `SELECT * FROM ` + tableNameNote + ` WHERE iduser = ? ORDER BY created`
 const updateStatementNote = `
 UPDATE ` + tableNameNote + `
@@ -69,7 +68,7 @@ const insertStatementAlarm = `
   INSERT INTO ` + tableNameAlarm + ` (
     title, created, alarm, iduser
   ) VALUES (?, ?, ?, ?)`
-const listStatementAlarm = `SELECT * FROM ` + tableNameAlarm + `ORDER BY created`
+const listStatementAlarm = `SELECT * FROM ` + tableNameAlarm + ` ORDER BY created`
 const getStatementAlarm = `SELECT * FROM ` + tableNameAlarm + ` WHERE iduser = ? ORDER BY created`
 const updateStatementAlarm = `
 UPDATE ` + tableNameAlarm + `
@@ -96,7 +95,7 @@ const insertStatementInfo = `
   INSERT INTO ` + tableNameInfo + ` (
     crop, created, sowing, city, address, iduser
   ) VALUES (?, ?, ?, ?, ?, ?)`
-const listStatementInfo = `SELECT * FROM ` + tableNameInfo + `ORDER BY created`
+const listStatementInfo = `SELECT * FROM ` + tableNameInfo + ` ORDER BY created`
 const getStatementInfo = `SELECT * FROM ` + tableNameInfo + ` WHERE iduser = ? ORDER BY created`
 const updateStatementInfo = `
 UPDATE ` + tableNameInfo + `
@@ -125,7 +124,7 @@ const insertStatementPlant = `
   INSERT INTO ` + tableNamePlant + ` (
     name, kingdom, season, temperature, idnutrient, idpests
   ) VALUES (?, ?, ?, ?, ?,?)`
-const listStatementPlant = `SELECT * FROM ` + tableNamePlant + `ORDER BY name`
+const listStatementPlant = `SELECT * FROM ` + tableNamePlant + ` ORDER BY name`
 const getStatementPlant = `SELECT * FROM ` + tableNamePlant + ` WHERE name = ? ORDER BY name`
 const updateStatementPlant = `
 UPDATE ` + tableNamePlant + `
@@ -154,7 +153,7 @@ const insertStatementNutrient = `
   INSERT INTO ` + tableNameNutrient + ` (
     formula, advantage
   ) VALUES (?, ?)`
-const listStatementNutrient = `SELECT * FROM ` + tableNameNutrient + `ORDER BY formula`
+const listStatementNutrient = `SELECT * FROM ` + tableNameNutrient + ` ORDER BY formula`
 const getStatementNutrient = `SELECT * FROM ` + tableNameNutrient + ` WHERE id = ? ORDER BY formula`
 const updateStatementNutrient = `
 UPDATE ` + tableNameNutrient + `
@@ -179,7 +178,7 @@ const insertStatementPests = `
   INSERT INTO ` + tableNamePests + ` (
     category, causes, consequences, solution
   ) VALUES (?, ?, ?, ?)`
-const listStatementPests = `SELECT * FROM ` + tableNamePests + `ORDER BY category`
+const listStatementPests = `SELECT * FROM ` + tableNamePests + ` ORDER BY category`
 const getStatementPests = `SELECT * FROM ` + tableNamePests + ` WHERE category = ? ORDER BY category`
 const updateStatementPests = `
 UPDATE ` + tableNamePests + `
@@ -206,7 +205,7 @@ const insertStatementScan = `
   INSERT INTO ` + tableNameScan + ` (
     created, distance, zone_width, zone_height, latitude, longitude, city, iduser
   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-const listStatementScan = `SELECT * FROM ` + tableNameScan + `ORDER BY created`
+const listStatementScan = `SELECT * FROM ` + tableNameScan + ` ORDER BY created`
 const getStatementScan = `SELECT * FROM ` + tableNameScan + ` WHERE iduser = ? ORDER BY created`
 const updateStatementScan = `
 UPDATE ` + tableNameScan + `

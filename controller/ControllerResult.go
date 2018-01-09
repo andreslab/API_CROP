@@ -5,33 +5,33 @@ import (
 	"net/http"
 )
 
-func ManagerRouterresult(w http.ResponseWriter, r *http.Request) {
+func ManagerRouterResult(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		RequestGetresult(w, r)
+		RequestGetResult(w, r)
 	case "POST":
-		RequestPostresult(w, r)
+		RequestPostResult(w, r)
 	case "UPDATE":
-		RequestUpdateresult(w, r)
+		RequestUpdateResult(w, r)
 	case "DELETE":
-		RequestDeleteresult(w, r)
+		RequestDeleteResult(w, r)
 	default:
 	}
 }
 
-func RequestGetresult(w http.ResponseWriter, r *http.Request) {
+func RequestGetResult(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("request Get")
 }
 
-func RequestPostresult(w http.ResponseWriter, r *http.Request) {
+func RequestPostResult(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("request Post")
 }
 
-func RequestUpdateresult(w http.ResponseWriter, r *http.Request) {
+func RequestUpdateResult(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("request Update")
 }
 
-func RequestDeleteresult(w http.ResponseWriter, r *http.Request) {
+func RequestDeleteResult(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("request Delete")
 }

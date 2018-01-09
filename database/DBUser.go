@@ -4,6 +4,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -68,21 +69,22 @@ func NewMySQLDBUser() (*mysqlDB, error) {
 	if db.insert, err = conn.Prepare(insertStatementUser); err != nil {
 		return nil, fmt.Errorf("mysql: prepare insert: %v", err)
 	}
-	/*
-		if db.listBy, err = conn.Prepare(listByStatement); err != nil {
-			return nil, fmt.Errorf("mysql: prepare listBy: %v", err)
-		}
-		if db.update, err = conn.Prepare(updateStatement); err != nil {
-			return nil, fmt.Errorf("mysql: prepare update: %v", err)
-		}
-		if db.delete, err = conn.Prepare(deleteStatement); err != nil {
-			return nil, fmt.Errorf("mysql: prepare delete: %v", err)
-		}*/
+
+	/*if db.listBy, err = conn.Prepare(listByStatement); err != nil {
+		return nil, fmt.Errorf("mysql: prepare listBy: %v", err)
+	}*/
+	if db.update, err = conn.Prepare(updateStatementUser); err != nil {
+		return nil, fmt.Errorf("mysql: prepare update: %v", err)
+	}
+	if db.delete, err = conn.Prepare(deleteStatementUser); err != nil {
+		return nil, fmt.Errorf("mysql: prepare delete: %v", err)
+	}
 
 	return db, nil
 }
 
 func (db *mysqlDB) AddUser(u *model.UserModel) (id int64, err error) {
+
 	r, err := execAffectingOneRow(
 		db.insert,
 		u.Name,
@@ -90,7 +92,9 @@ func (db *mysqlDB) AddUser(u *model.UserModel) (id int64, err error) {
 		u.Email,
 		u.Pass,
 		u.Created)
+
 	if err != nil {
+		fmt.Println(err)
 		return 0, err
 	}
 
@@ -98,10 +102,12 @@ func (db *mysqlDB) AddUser(u *model.UserModel) (id int64, err error) {
 	if err != nil {
 		return 0, fmt.Errorf("mysql: could not get last insert ID: %v", err)
 	}
+	defer db.conn.Close()
 	return lastInsertID, nil
 }
 
 func (db *mysqlDB) ListUser() ([]*model.UserModel, error) {
+
 	rows, err := db.list.Query()
 	if err != nil {
 		fmt.Print("error")
@@ -116,9 +122,9 @@ func (db *mysqlDB) ListUser() ([]*model.UserModel, error) {
 		if err != nil {
 			return nil, fmt.Errorf("mysql: could not read row: %v", err)
 		}
-
 		users = append(users, user)
 	}
+	defer db.conn.Close()
 	return users, nil
 }
 
@@ -127,9 +133,24 @@ func (db *mysqlDB) GetUser(id int64) {
 }
 
 func (db *mysqlDB) UpdateUser(b *model.UserModel) error {
-	return nil
+	if b.ID == 0 {
+		return errors.New("mysql: book with unassigned ID passed into updateBook")
+	}
+
+	_, err := execAffectingOneRow(db.update,
+		b.Name,
+		b.Lastname,
+		b.Email,
+		b.Pass,
+		b.Created,
+		b.ID)
+	return err
 }
 
 func (db *mysqlDB) DeleteUser(id int64) error {
-	return nil
+	if id == 0 {
+		return errors.New("mysql: book with unassigned ID passed into deleteBook")
+	}
+	_, err := execAffectingOneRow(db.delete, id)
+	return err
 }
