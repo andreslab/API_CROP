@@ -5,8 +5,8 @@ type ResponseRequestModel struct {
 	Msg  string `json:"msg"`
 }
 
-type ResponseRequestUserModel struct {
-	Code   int    `json:"code"`
-	Msg    string `json:"msg"`
-	IDUser int64  `json:"iduser"`
+type ResponseRequestIdModel struct {
+	Code int    `json:"code"`
+	Msg  string `json:"msg"`
+	ID   int64  `json:"id"`
 }

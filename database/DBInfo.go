@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -130,9 +131,25 @@ func (db *mysqlDB) GetInfo(id int64) {
 }
 
 func (db *mysqlDB) UpdateInfo(b *model.InfoModel) error {
-	return nil
+	if b.ID == 0 {
+		return errors.New("mysql: book with unassigned ID passed into updateBook")
+	}
+
+	_, err := execAffectingOneRow(db.update,
+		b.Created,
+		b.Crop,
+		b.SowingType,
+		b.City,
+		b.Address,
+		b.IDUser,
+		b.ID)
+	return err
 }
 
 func (db *mysqlDB) DeleteInfo(id int64) error {
-	return nil
+	if id == 0 {
+		return errors.New("mysql: Info with unassigned ID passed into deleteBook")
+	}
+	_, err := execAffectingOneRow(db.delete, id)
+	return err
 }

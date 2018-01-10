@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -129,9 +130,25 @@ func (db *mysqlDB) GetPlant(id int64) {
 }
 
 func (db *mysqlDB) UpdatePlant(b *modelDB.PlantModelDB) error {
-	return nil
+	if b.ID == 0 {
+		return errors.New("mysql: book with unassigned ID passed into updateBook")
+	}
+
+	_, err := execAffectingOneRow(db.update,
+		b.Name,
+		b.Kingdom,
+		b.SeasonEnv,
+		b.TemperatureEnv,
+		b.IDNutrient,
+		b.IDPests,
+		b.ID)
+	return err
 }
 
 func (db *mysqlDB) DeletePlant(id int64) error {
-	return nil
+	if id == 0 {
+		return errors.New("mysql: Plant with unassigned ID passed into deleteBook")
+	}
+	_, err := execAffectingOneRow(db.delete, id)
+	return err
 }

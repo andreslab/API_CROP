@@ -11,32 +11,32 @@ import (
 	"github.com/andreslab/prj_api_crop/model"
 )
 
-func ManagerRouterUser(w http.ResponseWriter, r *http.Request) {
+func ManagerRouterInfo(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		RequestGetUser(w, r)
+		RequestGetInfo(w, r)
 	case "POST":
-		RequestPostUser(w, r)
-	case "PUT":
-		RequestUpdateUser(w, r)
+		RequestPostInfo(w, r)
+	case "UPDATE":
+		RequestUpdateInfo(w, r)
 	case "DELETE":
-		RequestDeleteUser(w, r)
+		RequestDeleteInfo(w, r)
 	default:
 	}
 }
 
-func RequestGetUser(w http.ResponseWriter, r *http.Request) {
-	var data []model.UserModel
+func RequestGetInfo(w http.ResponseWriter, r *http.Request) {
+	var data []model.InfoModel
 
-	db, err := database.NewMySQLDBUser()
-	user, err := db.ListUser()
+	db, err := database.NewMySQLDBInfo()
+	info, err := db.ListInfo()
 
 	if err != nil {
 		fmt.Println("error")
 	}
 
-	for _, value := range user {
+	for _, value := range info {
 		data = append(data, *value)
 	}
 
@@ -50,10 +50,10 @@ func RequestGetUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-func RequestPostUser(w http.ResponseWriter, r *http.Request) {
+func RequestPostInfo(w http.ResponseWriter, r *http.Request) {
 
-	var data model.UserModel
-	var response model.ResponseRequestIdModel
+	var data model.InfoModel
+	var response model.ResponseRequestInfoModel
 
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(r.Body)
@@ -69,11 +69,11 @@ func RequestPostUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	db, err := database.NewMySQLDBUser()
+	db, err := database.NewMySQLDBInfo()
 	if err != nil {
 		fmt.Println(err)
 	}
-	iduser, err := db.AddUser(&data)
+	idinfo, err := db.AddInfo(&data)
 
 	if err != nil {
 		log.Fatal(err)
@@ -92,11 +92,11 @@ func RequestPostUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(jsonData)
 	} else {
-		fmt.Println("New ID_User: ", iduser)
+		fmt.Println("New ID_Info: ", idinfo)
 		response = model.ResponseRequestIdModel{
-			Code: 200,
-			Msg:  "Datos guardados",
-			ID:   iduser,
+			Code:   200,
+			Msg:    "Datos guardados",
+			IDInfo: idinfo,
 		}
 		//header
 		w.Header().Set("Content-Type", "application/json")
@@ -110,9 +110,9 @@ func RequestPostUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func RequestUpdateUser(w http.ResponseWriter, r *http.Request) {
+func RequestUpdateInfo(w http.ResponseWriter, r *http.Request) {
 
-	var data model.UserModel
+	var data model.InfoModel
 	var response model.ResponseRequestModel
 
 	buf := new(bytes.Buffer)
@@ -129,11 +129,11 @@ func RequestUpdateUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	db, err := database.NewMySQLDBUser()
+	db, err := database.NewMySQLDBInfo()
 	if err != nil {
 		fmt.Println(err)
 	}
-	err = db.UpdateUser(&data)
+	err = db.UpdateInfo(&data)
 
 	if err != nil {
 		log.Fatal(err)
@@ -166,8 +166,8 @@ func RequestUpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func RequestDeleteUser(w http.ResponseWriter, r *http.Request) {
-	var data model.UserModel
+func RequestDeleteInfo(w http.ResponseWriter, r *http.Request) {
+	var data model.InfoModel
 	var response model.ResponseRequestModel
 
 	buf := new(bytes.Buffer)
@@ -184,12 +184,12 @@ func RequestDeleteUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	db, err := database.NewMySQLDBUser()
+	db, err := database.NewMySQLDBInfo()
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = db.DeleteUser(data.ID)
+	err = db.DeleteInfo(data.ID)
 
 	if err != nil {
 		log.Fatal(err)

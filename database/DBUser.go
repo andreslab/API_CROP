@@ -149,7 +149,7 @@ func (db *mysqlDB) UpdateUser(b *model.UserModel) error {
 
 func (db *mysqlDB) DeleteUser(id int64) error {
 	if id == 0 {
-		return errors.New("mysql: book with unassigned ID passed into deleteBook")
+		return errors.New("mysql: User with unassigned ID passed into deleteBook")
 	}
 	_, err := execAffectingOneRow(db.delete, id)
 	return err

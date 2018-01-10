@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -133,9 +134,25 @@ func (db *mysqlDB) GetNote(id int64) {
 }
 
 func (db *mysqlDB) UpdateNote(b *model.ActionCreateNoteModel) error {
-	return nil
+	if b.ID == 0 {
+		return errors.New("mysql: book with unassigned ID passed into updateBook")
+	}
+
+	_, err := execAffectingOneRow(db.update,
+		b.Title,
+		b.Body,
+		b.Tag,
+		b.Alarm,
+		b.DateCreated,
+		b.DateEdit,
+		b.ID)
+	return err
 }
 
 func (db *mysqlDB) DeleteNote(id int64) error {
-	return nil
+	if id == 0 {
+		return errors.New("mysql: User with unassigned ID passed into deleteBook")
+	}
+	_, err := execAffectingOneRow(db.delete, id)
+	return err
 }

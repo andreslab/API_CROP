@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -121,9 +122,23 @@ func (db *mysqlDB) GetAlarm(id int64) {
 }
 
 func (db *mysqlDB) UpdateAlarm(b *model.ActionCreateAlarmModel) error {
-	return nil
+	if b.ID == 0 {
+		return errors.New("mysql: book with unassigned ID passed into updateBook")
+	}
+
+	_, err := execAffectingOneRow(db.update,
+		b.Title,
+		b.DateCreated,
+		b.DateAlarm,
+		b.IDUser,
+		b.ID)
+	return err
 }
 
 func (db *mysqlDB) DeleteAlarm(id int64) error {
-	return nil
+	if id == 0 {
+		return errors.New("mysql: User with unassigned ID passed into deleteBook")
+	}
+	_, err := execAffectingOneRow(db.delete, id)
+	return err
 }

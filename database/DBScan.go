@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -139,9 +140,27 @@ func (db *mysqlDB) GetScan(id int64) {
 }
 
 func (db *mysqlDB) UpdateScan(b *model.ScanModel) error {
-	return nil
+	if b.ID == 0 {
+		return errors.New("mysql: book with unassigned ID passed into updateBook")
+	}
+
+	_, err := execAffectingOneRow(db.update,
+		b.Created,
+		b.Distance,
+		b.ZoneWidth,
+		b.ZoneHeight,
+		b.Latitude,
+		b.Longitude,
+		b.City,
+		b.IDUser,
+		b.ID)
+	return err
 }
 
 func (db *mysqlDB) DeleteScan(id int64) error {
-	return nil
+	if id == 0 {
+		return errors.New("mysql: Scan with unassigned ID passed into deleteBook")
+	}
+	_, err := execAffectingOneRow(db.delete, id)
+	return err
 }
