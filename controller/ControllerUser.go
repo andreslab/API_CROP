@@ -66,6 +66,7 @@ func RequestPostUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.Unmarshal([]byte(dataJSON), &data)
 	if err != nil {
+		fmt.Printf("error json:")
 		fmt.Println(err)
 	}
 
@@ -73,40 +74,75 @@ func RequestPostUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	iduser, err := db.AddUser(&data)
 
-	if err != nil {
-		log.Fatal(err)
-		log.Println("json.Compact:", err)
-		if serr, ok := err.(*json.SyntaxError); ok {
-			log.Println("Occurred at offset:", serr.Offset)
-		}
-		response = model.ResponseRequestIdModel{
-			Code: 500,
-			Msg:  "Error al guardar los datos",
-			ID:   0,
-		}
-		//header
-		w.Header().Set("Content-Type", "application/json")
-		jsonData, _ := json.Marshal(response)
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(jsonData)
-	} else {
-		fmt.Println("New ID_User: ", iduser)
-		response = model.ResponseRequestIdModel{
-			Code: 200,
-			Msg:  "Datos guardados",
-			ID:   iduser,
-		}
-		//header
-		w.Header().Set("Content-Type", "application/json")
-		jsonData, err := json.Marshal(response)
+	if data.Name != "" {
+		//registro de usuario
+		iduser, err := db.AddUser(&data)
+		fmt.Printf("Registro completo, id: %d", iduser)
+
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
+			log.Println("json.Compact:", err)
+			if serr, ok := err.(*json.SyntaxError); ok {
+				log.Println("Occurred at offset:", serr.Offset)
+			}
+			response = model.ResponseRequestIdModel{
+				Code: 500,
+				Msg:  "Error al guardar los datos",
+				ID:   0,
+			}
+			//header
+			w.Header().Set("Content-Type", "application/json")
+			jsonData, _ := json.Marshal(response)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(jsonData)
+		} else {
+			response = model.ResponseRequestIdModel{
+				Code: 200,
+				Msg:  "Registro completo",
+				ID:   0,
+			}
 		}
-		w.WriteHeader(http.StatusOK)
-		w.Write(jsonData)
+
+	} else {
+		//login de usuario
+		user, err := db.GetUser(data.Email)
+		fmt.Printf("Login completo, name: %s", user.Name)
+
+		if err != nil {
+			log.Fatal(err)
+			log.Println("json.Compact:", err)
+			if serr, ok := err.(*json.SyntaxError); ok {
+				log.Println("Occurred at offset:", serr.Offset)
+			}
+			response = model.ResponseRequestIdModel{
+				Code: 500,
+				Msg:  "Error al guardar los datos",
+				ID:   0,
+			}
+			//header
+			w.Header().Set("Content-Type", "application/json")
+			jsonData, _ := json.Marshal(response)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(jsonData)
+		} else {
+			response = model.ResponseRequestIdModel{
+				Code: 200,
+				Msg:  "Login completo",
+				ID:   0,
+			}
+		}
+
 	}
+
+	//header
+	w.Header().Set("Content-Type", "application/json")
+	jsonData, err := json.Marshal(response)
+	if err != nil {
+		fmt.Println(err)
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonData)
 
 }
 

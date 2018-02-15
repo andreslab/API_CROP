@@ -128,8 +128,15 @@ func (db *mysqlDB) ListUser() ([]*model.UserModel, error) {
 	return users, nil
 }
 
-func (db *mysqlDB) GetUser(id int64) {
-
+func (db *mysqlDB) GetUser(email string) (*model.UserModel, error) {
+	user, err := scanUser(db.get.QueryRow(email))
+	if err == sql.ErrNoRows {
+		return nil, fmt.Errorf("mysql: could not find book with email: %s", email)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("mysql: could not get book: %v", err)
+	}
+	return user, nil
 }
 
 func (db *mysqlDB) UpdateUser(b *model.UserModel) error {

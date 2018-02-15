@@ -1,13 +1,19 @@
 package model
 
+import (
+	utils "github.com/andreslab/prj_api_crop/model/utils"
+)
+
+type ContentScanModel struct {
+	Data []ScanModel `json:"data"`
+}
+
 type ScanModel struct {
-	ID         int64
-	Created    string `json:"created"`
-	Distance   string `json:"distance"`
-	ZoneWidth  string `json:"zone_width"`
-	ZoneHeight string `json:"zone_height"`
-	Latitude   string `json:"lat"`
-	Longitude  string `json:"lomg"`
-	City       string `json:"city"`
-	IDUser     int64  `json:"id_user"`
+	ID            int64
+	Date          utils.DateModel   `json:"created"`
+	PercentInfect string            `json:"percent_infect"`
+	GalleryID     string            `json:"gallery_id"`
+	Zone          string            `json:"zone"`
+	Area          []LatLngModel     `json:"area"`
+	AreaInfection []ScanInfectModel `json:"area_infect"`
 }

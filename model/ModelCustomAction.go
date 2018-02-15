@@ -1,5 +1,15 @@
 package model
 
+type ContentAbstractAction struct {
+	ID          int64
+	Title       string `json:"title"`
+	Description string `json:"body"`
+	Type        string `json:"type"`
+	DateCreated string `json:"created"`
+	DateEdit    string `json:"edited"`
+	IDUser      int64  `json:"iduser"`
+}
+
 type ActionCreateNoteModel struct {
 	ID          int64
 	Title       string `json:"title"`
@@ -16,6 +26,14 @@ type ActionCreateAlarmModel struct {
 	Title       string `json:"title"`
 	DateCreated string `json:"created"`
 	DateAlarm   string `json:"alarm"`
+	IDUser      int64  `json:"iduser"`
+}
+
+type ActionCreatePhotoModel struct {
+	ID          int64
+	Title       string `json:"title"`
+	DateCreated string `json:"created"`
+	IDPhoto     string `json:"id_photo"`
 	IDUser      int64  `json:"iduser"`
 }
 

@@ -18,11 +18,12 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", CheckState)
-	mux.HandleFunc("/crop/alarm", controller.ManagerRouterAlarm)
-	mux.HandleFunc("/crop/note", controller.ManagerRouterNote)
-	mux.HandleFunc("/crop/result", controller.ManagerRouterResult)
 	mux.HandleFunc("/crop/scan", controller.ManagerRouterScan)
 	mux.HandleFunc("/crop/user", controller.ManagerRouterUser)
+	mux.HandleFunc("/crop/storage", controller.ManagerRouterStorage)
+	mux.HandleFunc("/crop/weather", controller.ManagerRouterWeather)
+	mux.HandleFunc("/crop/profile", controller.ManagerRouterProfile)
+	mux.HandleFunc("/crop/pests", controller.ManagerRouterPests)
 
 	port := os.Getenv("PORT")
 	if port == "" {

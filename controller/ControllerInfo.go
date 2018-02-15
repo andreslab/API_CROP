@@ -53,7 +53,7 @@ func RequestGetInfo(w http.ResponseWriter, r *http.Request) {
 func RequestPostInfo(w http.ResponseWriter, r *http.Request) {
 
 	var data model.InfoModel
-	var response model.ResponseRequestInfoModel
+	var response model.ResponseRequestIdModel
 
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(r.Body)
@@ -94,9 +94,9 @@ func RequestPostInfo(w http.ResponseWriter, r *http.Request) {
 	} else {
 		fmt.Println("New ID_Info: ", idinfo)
 		response = model.ResponseRequestIdModel{
-			Code:   200,
-			Msg:    "Datos guardados",
-			IDInfo: idinfo,
+			Code: 200,
+			Msg:  "Datos guardados",
+			ID:   idinfo,
 		}
 		//header
 		w.Header().Set("Content-Type", "application/json")
